@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ZATE | Moda Verão</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fafafa;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #d4af37cc, #3a2f0bcc);
+    color: #fff;
+    padding: 1rem 2rem;
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+
+  /* BANNER */
+  .banner {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    height: 350px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 1.5rem 2rem;
+    color: white;
+    font-weight: 900;
+    font-size: 2.8rem;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    border-radius: 0 0 20px 20px;
+  }
+  .banner button {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    background: #d4af37;
+    border: none;
+    padding: 0.8rem 1.6rem;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #111;
+    box-shadow: 0 4px 10px #b38a20;
+    transition: background-color 0.3s ease;
+  }
+  .banner button:hover {
+    background-color: #b38a20;
+  }
+
+  /* MAIN GRID */
+  main {
+    max-width: 1200px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+  .product-card img {
+    border-radius: 15px 15px 0 0;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .product-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .product-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    color: #333;
+  }
+  .product-info p {
+    font-size: 0.9rem;
+    color: #666;
+    flex-grow: 1;
+  }
+  .price {
+    font-weight: 900;
+    color: #d4af37;
+    font-size: 1.3rem;
+    margin-top: 0.8rem;
+  }
+  .btn-add {
+    margin-top: 1rem;
+    background: #d4af37;
+    border: none;
+    padding: 0.7rem;
+    font-weight: 700;
+    color: #111;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px #b38a20;
+    transition: background-color 0.3s ease;
+  }
+  .btn-add:hover {
+    background-color: #b38a20;
+  }
+
+  /* CARRINHO DESLIZANTE */
+  .cart-panel {
+    position: fixed;
+    top: 0; right: -360px;
+    width: 360px;
+    height: 100vh;
+    background: white;
+    box-shadow: -4px 0 20px rgb(0 0 0 / 0.15);
+    padding: 1.5rem;
+    transition: right 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 15000;
+  }
+  .cart-panel.open {
+    right: 0;
+  }
+  .cart-panel h2 {
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: #222;
+  }
+  .cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5rem 0;
+  }
+  .cart-items li {
+    list-style: none;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: #333;
+  }
+  .cart-items li:last-child {
+    border-bottom: none;
+  }
+  .cart-items .quantity {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 0.6rem;
+  }
+  .cart-total {
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #d4af37;
+    margin-top: 1rem;
+    text-align: right;
+  }
+  .btn-close-cart {
+    align-self: flex-end;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 900;
+    color: #d4af37;
+  }
+  .btn-close-cart:hover {
+    color: #b38a20;
+  }
+
+  /* BOTAO FIXO DO CARRINHO */
+  .btn-open-cart {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #d4af37;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px #b38a20;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 16000;
+    transition: background-color 0.3s ease;
+  }
+  .btn-open-cart:hover {
+    background-color: #b38a20;
+  }
+
+  /* RODAPE */
+  footer {
+    background: #222;
+    color: #ddd;
+    padding: 1.8rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+  footer .footer-category {
+    min-width: 100px;
+  }
+  footer .footer-category h4 {
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    color: #d4af37;
+  }
+  footer .footer-category ul {
+    list-style: none;
+  }
+  footer .footer-category li {
+    margin-bottom: 0.4rem;
+  }
+  footer .footer-category a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+  footer .footer-category a:hover {
+    color: #d4af37;
+  }
+
+</style>
+</head>
+<body>
+
+<header>ZATE MODA VERÃO</header>
+
+<section class="banner">
+  PRONTO PARA O VERÃO
+  <button id="btnBannerComprar">Comprar</button>
+</section>
+
+<main id="productsGrid">
+  <!-- Produtos inseridos por JS -->
+</main>
+
+<!-- Carrinho -->
+<aside class="cart-panel" id="cartPanel">
+  <button class="btn-close-cart" id="btnCloseCart">&times;</button>
+  <h2>Carrinho</h2>
+  <ul class="cart-items" id="cartItems"></ul>
+  <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
+</aside>
+
+<button class="btn-open-cart" id="btnOpenCart">&#128722;</button>
+
+<footer>
+  <div class="footer-category">
+    <h4>Mulher</h4>
+    <ul>
+      <li><a href="#">Vestidos</a></li>
+      <li><a href="#">Blusas</a></li>
+      <li><a href="#">Calças</a></li>
+    </ul>
+  </div>
+  <div class="footer-category">
+    <h4>Homem</h4>
+    <ul>
+      <li><a href="#">Camisetas</a></li>
+      <li><a href="#">Bermudas</a></li>
+      <li><a href="#">Camisas</a></li>
+    </ul>
+  </div>
+  <div class="footer-category">
+    <h4>Crianças</h4>
+    <ul>
+      <li><a href="#">Roupas</a></li>
+      <li><a href="#">Calçados</a></li>
+      <li><a href="#">Acessórios</a></li>
+    </ul>
+  </div>
+  <div class="footer-category">
+    <h4>Acessórios</h4>
+    <ul>
+      <li><a href="#">Bolsas</a></li>
+      <li><a href="#">Óculos</a></li>
+      <li><a href="#">Relógios</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // Produtos exemplo
+  const products = [
+    {id:1, title:'Vestido Floral', description:'Vestido leve para o verão', price:149.90, image:'https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?auto=format&fit=crop&w=400&q=80'},
+    {id:2, title:'Camiseta Masculina', description:'Camiseta confortável', price:79.90, image:'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80'},
+    {id:3, title:'Bermuda Jeans', description:'Bermuda jeans clara', price:120.00, image:'https://images.unsplash.com/photo-1530845641242-9dfd5de14894?auto=format&fit=crop&w=400&q=80'},
+    {id:4, title:'Blusa Estampada', description:'Blusa feminina moderna', price:99.90, image:'https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=400&q=80'},
+    {id:5, title:'Camisa Social', description:'Camisa social azul', price:130.00, image:'https://images.unsplash.com/photo-1520975691835-cdff92c974a5?auto=format&fit=crop&w=400&q=80'},
+    {id:6, title:'Calça Casual', description:'Calça masculina', price:180.00, image:'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80'},
+    {id:7, title:'Shorts Infantis', description:'Shorts para crianças', price:59.90, image:'https://images.unsplash.com/photo-1535930749574-1399327ce78f?auto=format&fit=crop&w=400&q=80'},
+    {id:8, title:'Bolsa de Palha', description:'Bolsa artesanal', price:110.00, image:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'},
+    {id:9, title:'Óculos de Sol', description:'Óculos UV400', price:150.00, image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=400&q=80'},
+    {id:10, title:'Relógio Moderno', description:'Relógio com design moderno', price:220.00, image:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=400&q=80'},
+    {id:11, title:'Sandália Feminina', description:'Sandália confortável', price:129.90, image:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80'},
+    {id:12, title:'Tênis Casual', description:'Tênis para o dia a dia', price:190.00, image:'https://images.unsplash.com/photo-1519741490267-1e5537357aa6?auto=format&fit=crop&w=400&q=80'},
+  ];
+
+  // Referências DOM
+  const productsGrid = document.getElementById('productsGrid');
+  const cartPanel = document.getElementById('cartPanel');
+  const btnOpenCart = document.getElementById('btnOpenCart');
+  const btnCloseCart = document.getElementById('btnCloseCart');
+  const cartItemsEl = document.getElementById('cartItems');
+  const cartTotalEl = document.getElementById('cartTotal');
+  const btnBannerComprar = document.getElementById('btnBannerComprar');
+
+  // Estado do carrinho: { produtoId: quantidade }
+  let cart = {};
+
+  // Formatar preço para BRL
+  function formatPrice(num) {
+    return num.toLocaleString('pt-BR', { style: 'currency', currency: 'EUR' });
+  }
+
+  // Renderizar produtos na grid
+  function renderProducts() {
+    productsGrid.innerHTML = '';
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.title}">
+        <div class="product-info">
+          <h3>${p.title}</h3>
+          <p>${p.description}</p>
+          <div class="price">${formatPrice(p.price)}</div>
+          <button class="btn-add" data-id="${p.id}">Adicionar</button>
+        </div>
+      `;
+
+      productsGrid.appendChild(card);
+    });
+
+    // Adicionar eventos nos botões adicionar
+    document.querySelectorAll('.btn-add').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        addToCart(Number(id));
+      });
+    });
+  }
+
+  // Atualizar UI do carrinho
+  function updateCartUI() {
+    cartItemsEl.innerHTML = '';
+    let total = 0;
+    for (const id in cart) {
+      const quantity = cart[id];
+      const product = products.find(p => p.id === Number(id));
+      const itemTotal = product.price * quantity;
+      total += itemTotal;
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        ${product.title} <span class="quantity">x${quantity}</span> <span>${formatPrice(itemTotal)}</span>
+      `;
+
+      cartItemsEl.appendChild(li);
+    }
+    cartTotalEl.textContent = `Total: ${formatPrice(total)}`;
+  }
+
+  // Adicionar produto ao carrinho
+  function addToCart(id) {
+    if(cart[id]) {
+      cart[id]++;
+    } else {
+      cart[id] = 1;
+    }
+    updateCartUI();
+    openCartPanel();
+  }
+
+  // Abrir painel do carrinho
+  function openCartPanel() {
+    cartPanel.classList.add('open');
+  }
+
+  // Fechar painel do carrinho
+  btnCloseCart.addEventListener('click', () => {
+    cartPanel.classList.remove('open');
+  });
+
+  // Abrir carrinho pelo botão fixo
+  btnOpenCart.addEventListener('click', () => {
+    cartPanel.classList.toggle('open');
+  });
+
+  // Botão comprar do banner adiciona o primeiro produto ao carrinho só pra exemplo
+  btnBannerComprar.addEventListener('click', () => {
+    addToCart(products[0].id);
+  });
+
+  // Inicializa
+  renderProducts();
+  updateCartUI();
+
+</script>
+
+</body>
+</html>
+<footer style="background-color: #222; color: #d4af37cc; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
+  <p style="font-size: 18px; margin: 0 0 10px;">Quer contactar-nos?</p>
+  <p style="margin: 0;">
+    <a href="mailto:zatesupport@gmail.com" style="color: #d4af37cc; text-decoration: none; margin-right: 15px;">zatesupport@gmail.com</a> |
+    <a href="https://instagram.com/zate_studios_official" target="_blank" style="color: #d4af37cc; text-decoration: none; margin-left: 15px;">@zate_studios_official</a>
+  </p>
+</footer>
+
