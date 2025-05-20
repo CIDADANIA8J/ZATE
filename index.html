@@ -1,329 +1,561 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Loja Exemplo</title>
+<title>ZATE | Moda Verão</title>
 <style>
-  /* Seu CSS aqui (mantive o essencial para funcionamento do modal e layout) */
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0; padding: 0;
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
   }
-  #productsGrid {
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #fafafa;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: linear-gradient(135deg, #d4af37cc, #3a2f0bcc);
+    color: #fff;
+    padding: 1rem 2rem;
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    text-align: center;
+  }
+  .banner {
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    height: 350px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 1.5rem 2rem;
+    color: white;
+    font-weight: 900;
+    font-size: 2.8rem;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    border-radius: 0 0 20px 20px;
+  }
+  .banner button {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    background: #d4af37;
+    border: none;
+    padding: 0.8rem 1.6rem;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #111;
+    box-shadow: 0 4px 10px #b38a20;
+    transition: background-color 0.3s ease;
+  }
+  .banner button:hover {
+    background-color: #b38a20;
+  }
+  main {
+    max-width: 1200px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-    gap: 16px;
-    padding: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
   }
   .product-card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 6px;
-    text-align: center;
-    background: #fff;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
   }
   .product-card img {
+    border-radius: 15px 15px 0 0;
     width: 100%;
-    max-height: 150px;
+    height: 180px;
     object-fit: cover;
-    cursor: pointer;
-    border-radius: 4px;
+  }
+  .product-info {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
   .product-info h3 {
-    margin: 10px 0 5px;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+    color: #333;
   }
   .product-info p {
-    font-size: 0.9em;
-    color: #555;
+    font-size: 0.9rem;
+    color: #666;
+    flex-grow: 1;
   }
   .price {
-    font-weight: bold;
-    margin: 8px 0;
+    font-weight: 900;
+    color: #d4af37;
+    font-size: 1.3rem;
+    margin-top: 0.8rem;
   }
   .btn-add {
-    background: #007bff;
-    color: white;
+    margin-top: 1rem;
+    background: #d4af37;
     border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
+    padding: 0.7rem;
+    font-weight: 700;
+    color: #111;
+    border-radius: 10px;
     cursor: pointer;
+    box-shadow: 0 4px 10px #b38a20;
+    transition: background-color 0.3s ease;
   }
   .btn-add:hover {
-    background: #0056b3;
+    background-color: #b38a20;
   }
-  #cartPanel {
+  .cart-panel {
     position: fixed;
-    top: 0; right: -320px;
-    width: 300px;
+    top: 0; right: -360px;
+    width: 360px;
     height: 100vh;
-    background: #f9f9f9;
-    border-left: 1px solid #ddd;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-    transition: right 0.3s ease;
-    padding: 20px;
-    overflow-y: auto;
-    z-index: 999;
+    background: white;
+    box-shadow: -4px 0 20px rgb(0 0 0 / 0.15);
+    padding: 1.5rem;
+    transition: right 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 15000;
   }
-  #cartPanel.open {
+  .cart-panel.open {
     right: 0;
   }
-  #btnOpenCart {
+  .cart-panel h2 {
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: #222;
+  }
+  .cart-items {
+    flex-grow: 1;
+    overflow-y: auto;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 0.5rem 0;
+  }
+  .cart-items li {
+    list-style: none;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: #333;
+  }
+  .cart-items li:last-child {
+    border-bottom: none;
+  }
+  .cart-items .quantity {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 0.6rem;
+  }
+  .cart-total {
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #d4af37;
+    margin-top: 1rem;
+    text-align: right;
+  }
+  .btn-close-cart {
+    align-self: flex-end;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 900;
+    color: #d4af37;
+  }
+  .btn-close-cart:hover {
+    color: #b38a20;
+  }
+  .btn-open-cart {
     position: fixed;
-    top: 20px; right: 20px;
-    background: #28a745;
-    color: white;
+    bottom: 20px;
+    right: 20px;
+    background: #d4af37;
     border: none;
-    padding: 10px 16px;
     border-radius: 50%;
+    width: 56px;
+    height: 56px;
     cursor: pointer;
-    font-size: 18px;
-    z-index: 1000;
+    box-shadow: 0 4px 10px #b38a20;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 16000;
+    transition: background-color 0.3s ease;
   }
-  #btnCloseCart {
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    float: right;
+  .btn-open-cart:hover {
+    background-color: #b38a20;
   }
-  #cartItems li {
-    margin-bottom: 8px;
+  footer {
+    background: #222;
+    color: #ddd;
+    padding: 1.8rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
   }
-  #cartTotal {
-    font-weight: bold;
-    margin-top: 15px;
-    font-size: 1.1em;
+  footer .footer-category {
+    min-width: 100px;
+  }
+  footer .footer-category h4 {
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    color: #d4af37;
+  }
+  footer .footer-category ul {
+    list-style: none;
+  }
+  footer .footer-category li {
+    margin-bottom: 0.4rem;
+  }
+  footer .footer-category a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+  footer .footer-category a:hover {
+    color: #d4af37;
   }
 
-  /* Modal da imagem */
+  /* Modal para ampliar imagem com info */
   #imageModal {
     display: none;
     position: fixed;
-    z-index: 2000;
-    left: 0; top: 0; width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.7);
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.8);
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    z-index: 20000;
+    cursor: pointer;
   }
   #modalContent {
     background: white;
-    border-radius: 8px;
+    border-radius: 15px;
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    cursor: default;
+    box-shadow: 0 0 30px rgba(255, 215, 55, 0.8);
+  }
+  #modalImage {
     max-width: 400px;
-    width: 100%;
-    padding: 15px;
-    text-align: center;
-    position: relative;
+    max-height: 80vh;
+    border-radius: 15px;
+    object-fit: cover;
+    flex-shrink: 0;
   }
-  #modalContent img {
-    width: 100%;
-    border-radius: 6px;
+  #modalText {
+    flex-grow: 1;
+    max-width: 400px;
   }
-  #modalClose {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    border: none;
-    background: none;
-  }
-  #modalContent h3 {
-    margin: 15px 0 8px;
-  }
-  #modalContent p {
-    color: #555;
+  #modalText h3 {
     margin-bottom: 10px;
+    font-size: 1.8rem;
+    color: #d4af37;
   }
-  #modalContent .price {
-    font-weight: bold;
+  #modalText p {
     margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #333;
+  #modalText p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.4;
   }
-  #modalContent button {
-    background: #007bff;
-    color: white;
+  #modalText .price {
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #d4af37;
+    margin-bottom: 20px;
+  }
+  #modalText button {
+    background: #d4af37;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 12px 25px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #111;
+    border-radius: 12px;
     cursor: pointer;
+    box-shadow: 0 4px 12px #b38a20;
+    transition: background-color 0.3s ease;
   }
-  #modalContent button:hover {
-    background: #0056b3;
+  #modalText button:hover {
+    background-color: #b38a20;
+  }
+
+  /* Scroll bar for cart items */
+  .cart-items::-webkit-scrollbar {
+    width: 8px;
+  }
+  .cart-items::-webkit-scrollbar-thumb {
+    background-color: #d4af37;
+    border-radius: 4px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    main {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    #modalContent {
+      flex-direction: column;
+      max-width: 95vw;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    #modalImage, #modalText {
+      max-width: 100%;
+    }
+  }
+  @media (max-width: 480px) {
+    main {
+      grid-template-columns: 1fr;
+    }
+    .banner {
+      font-size: 2rem;
+    }
   }
 </style>
 </head>
 <body>
 
-<button id="btnOpenCart" title="Abrir carrinho">🛒</button>
+<header>ZATE</header>
 
-<section id="productsGrid">
-  <!-- Produtos serão renderizados aqui -->
+<section class="banner">
+  Moda Verão
+  <button onclick="alert('Promoção exclusiva!')">Promoções</button>
 </section>
 
-<aside id="cartPanel">
-  <button id="btnCloseCart" title="Fechar carrinho">&times;</button>
+<main id="productsGrid">
+  <!-- Os produtos vão ser inseridos por JS -->
+</main>
+
+<button class="btn-open-cart" id="openCartBtn" title="Abrir carrinho">🛒</button>
+
+<aside class="cart-panel" id="cartPanel" aria-label="Carrinho de compras">
+  <button class="btn-close-cart" id="closeCartBtn" aria-label="Fechar carrinho">&times;</button>
   <h2>Carrinho</h2>
-  <ul id="cartItems"></ul>
-  <div id="cartTotal">Total: 0,00 €</div>
+  <ul class="cart-items" id="cartItemsList">
+    <!-- Itens do carrinho -->
+  </ul>
+  <div class="cart-total" id="cartTotal">Total: €0.00</div>
 </aside>
 
-<!-- Modal da imagem com detalhes -->
+<!-- Modal de imagem e detalhes -->
 <div id="imageModal">
-  <div id="modalContent">
-    <button id="modalClose" title="Fechar">&times;</button>
+  <div id="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
     <img id="modalImage" src="" alt="" />
-    <h3 id="modalName"></h3>
-    <p id="modalDescription"></p>
-    <div class="price" id="modalPrice"></div>
-    <button id="modalBuyBtn">Comprar</button>
+    <div id="modalText">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <div class="price" id="modalPrice"></div>
+      <button id="modalBuyBtn">Comprar</button>
+    </div>
   </div>
 </div>
 
+<footer>
+  <div class="footer-category">
+    <h4>Novidades</h4>
+    <ul>
+      <li><a href="#">Coleção Primavera</a></li>
+      <li><a href="#">Lançamentos</a></li>
+      <li><a href="#">Tendências</a></li>
+    </ul>
+  </div>
+  <div class="footer-category">
+    <h4>Masculino</h4>
+    <ul>
+      <li><a href="#">Camisas</a></li>
+      <li><a href="#">Calças</a></li>
+      <li><a href="#">Sapatos</a></li>
+    </ul>
+  </div>
+  <div class="footer-category">
+    <h4>Feminino</h4>
+    <ul>
+      <li><a href="#">Vestidos</a></li>
+      <li><a href="#">Blusas</a></li>
+      <li><a href="#">Sapatos</a></li>
+    </ul>
+  </div>
+  <div class="footer-category">
+    <h4>Contato</h4>
+    <ul>
+      <li><a href="#">Email</a></li>
+      <li><a href="#">Telefone</a></li>
+      <li><a href="#">Redes sociais</a></li>
+    </ul>
+  </div>
+</footer>
+
 <script>
-  // Seus produtos originais completos (8 produtos)
   const products = [
     {
       id: 1,
       name: "Vestido Floral",
-      description: "Vestido leve e floral para dias quentes.",
-      price: 120.00,
-      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=500&q=80"
+      description: "Vestido leve e confortável, perfeito para o verão.",
+      price: 59.99,
+      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 2,
-      name: "Camiseta Básica",
-      description: "Camiseta confortável, 100% algodão.",
-      price: 45.50,
-      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=500&q=80"
+      name: "Camisa Casual",
+      description: "Camisa masculina casual em algodão de alta qualidade.",
+      price: 39.90,
+      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 3,
-      name: "Bermuda Jeans",
-      description: "Bermuda jeans estilosa e resistente.",
-      price: 98.90,
-      image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=500&q=80"
+      name: "Calça Jeans",
+      description: "Calça jeans clássica com corte moderno e confortável.",
+      price: 49.50,
+      image: "https://images.unsplash.com/photo-1495121605193-b116b5b9c13f?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 4,
-      name: "Blusa Estampada",
-      description: "Blusa com estampa moderna para o verão.",
-      price: 79.90,
-      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=500&q=80"
+      name: "Tênis Esportivo",
+      description: "Tênis leve e resistente, ideal para atividades físicas.",
+      price: 69.99,
+      image: "https://images.unsplash.com/photo-1508051123996-69f8caf4891b?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 5,
-      name: "Calça Casual",
-      description: "Calça casual confortável para o dia a dia.",
-      price: 110.00,
-      image: "https://images.unsplash.com/photo-1495121605193-b116b5b09a3e?auto=format&fit=crop&w=500&q=80"
+      name: "Blusa de Frio",
+      description: "Blusa de frio com tecido macio e quentinho para o inverno.",
+      price: 44.95,
+      image: "https://images.unsplash.com/photo-1520975693243-57f9b28bbf2e?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 6,
-      name: "Tênis Esportivo",
-      description: "Tênis confortável para atividades esportivas.",
-      price: 130.00,
-      image: "https://images.unsplash.com/photo-1519741491402-f80301b43797?auto=format&fit=crop&w=500&q=80"
+      name: "Saia Midi",
+      description: "Saia midi elegante para diversas ocasiões.",
+      price: 35.90,
+      image: "https://images.unsplash.com/photo-1504595403659-9088ce801e29?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 7,
       name: "Jaqueta Jeans",
-      description: "Jaqueta jeans clássica para qualquer estação.",
-      price: 150.00,
-      image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=500&q=80"
+      description: "Jaqueta jeans estilosa e resistente para o dia a dia.",
+      price: 74.00,
+      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80"
     },
     {
       id: 8,
-      name: "Saia Plissada",
-      description: "Saia plissada elegante para ocasiões especiais.",
-      price: 85.00,
-      image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=500&q=80"
+      name: "Chapéu Panamá",
+      description: "Chapéu clássico para proteger do sol com estilo.",
+      price: 25.00,
+      image: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=400&q=80"
     }
   ];
 
-  // Elementos DOM
   const productsGrid = document.getElementById('productsGrid');
   const cartPanel = document.getElementById('cartPanel');
-  const btnOpenCart = document.getElementById('btnOpenCart');
-  const btnCloseCart = document.getElementById('btnCloseCart');
-  const cartItemsEl = document.getElementById('cartItems');
-  const cartTotalEl = document.getElementById('cartTotal');
+  const openCartBtn = document.getElementById('openCartBtn');
+  const closeCartBtn = document.getElementById('closeCartBtn');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const cartTotal = document.getElementById('cartTotal');
 
   const imageModal = document.getElementById('imageModal');
   const modalImage = document.getElementById('modalImage');
-  const modalName = document.getElementById('modalName');
-  const modalDescription = document.getElementById('modalDescription');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
   const modalPrice = document.getElementById('modalPrice');
-  const modalClose = document.getElementById('modalClose');
   const modalBuyBtn = document.getElementById('modalBuyBtn');
+  const modalContent = document.getElementById('modalContent');
 
-  // Estado do carrinho
   let cart = [];
 
-  // Formatador de preço em Euros
-  function formatPrice(price) {
-    return price.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
-  }
-
-  // Renderiza os produtos na grade
+  // Renderiza produtos no grid
   function renderProducts() {
     productsGrid.innerHTML = '';
-    products.forEach(prod => {
+    products.forEach(product => {
       const card = document.createElement('article');
-      card.className = 'product-card';
+      card.classList.add('product-card');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', `Visualizar detalhes do produto ${product.name}`);
+
       card.innerHTML = `
-        <img src="${prod.image}" alt="${prod.name}" data-id="${prod.id}" class="product-image" />
+        <img src="${product.image}" alt="${product.name}" />
         <div class="product-info">
-          <h3>${prod.name}</h3>
-          <p>${prod.description}</p>
-          <div class="price">${formatPrice(prod.price)}</div>
-          <button class="btn-add" data-id="${prod.id}">Adicionar ao carrinho</button>
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <div class="price">€${product.price.toFixed(2)}</div>
+          <button class="btn-add" aria-label="Adicionar ${product.name} ao carrinho">Comprar</button>
         </div>
       `;
+
+      // Clique na imagem ou no card para abrir modal com detalhes
+      card.querySelector('img').addEventListener('click', () => openModal(product));
+      card.querySelector('h3').addEventListener('click', () => openModal(product));
+      card.querySelector('p').addEventListener('click', () => openModal(product));
+
+      // Também abrir modal se a tecla Enter for pressionada no card (acessibilidade)
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(product);
+        }
+      });
+
+      // Botão comprar direto no card (sem abrir modal)
+      card.querySelector('.btn-add').addEventListener('click', e => {
+        e.stopPropagation();
+        addToCart(product.id);
+      });
+
       productsGrid.appendChild(card);
     });
   }
 
-  // Atualiza visual do carrinho
-  function updateCart() {
-    cartItemsEl.innerHTML = '';
-    if (cart.length === 0) {
-      cartItemsEl.innerHTML = '<li>O seu carrinho está vazio.</li>';
-      cartTotalEl.textContent = 'Total: 0,00 €';
-      return;
-    }
-    let total = 0;
-    cart.forEach(item => {
-      const prod = products.find(p => p.id === item.id);
-      const subtotal = prod.price * item.quantity;
-      total += subtotal;
-      const li = document.createElement('li');
-      li.textContent = `${prod.name} x ${item.quantity} - ${formatPrice(subtotal)}`;
-      cartItemsEl.appendChild(li);
-    });
-    cartTotalEl.textContent = `Total: ${formatPrice(total)}`;
-  }
-
-  // Adiciona produto ao carrinho
-  function addToCart(id) {
-    const idx = cart.findIndex(item => item.id === id);
-    if (idx > -1) {
-      cart[idx].quantity++;
-    } else {
-      cart.push({ id: id, quantity: 1 });
-    }
-    updateCart();
-  }
-
-  // Abrir modal com detalhes do produto
-  function openModal(id) {
-    const prod = products.find(p => p.id === id);
-    modalImage.src = prod.image;
-    modalImage.alt = prod.name;
-    modalName.textContent = prod.name;
-    modalDescription.textContent = prod.description;
-    modalPrice.textContent = formatPrice(prod.price);
-    modalBuyBtn.setAttribute('data-id', prod.id);
+  // Função para abrir modal e preencher info
+  function openModal(product) {
+    modalImage.src = product.image;
+    modalImage.alt = product.name;
+    modalTitle.textContent = product.name;
+    modalDesc.textContent = product.description;
+    modalPrice.textContent = `€${product.price.toFixed(2)}`;
+    modalBuyBtn.onclick = () => {
+      addToCart(product.id);
+      closeModal();
+    };
     imageModal.style.display = 'flex';
+    // Foco para o botão comprar no modal para acessibilidade
+    modalBuyBtn.focus();
   }
 
   // Fechar modal
@@ -331,55 +563,79 @@
     imageModal.style.display = 'none';
   }
 
-  // Event listeners
-
-  // Abrir carrinho
-  btnOpenCart.addEventListener('click', () => {
-    cartPanel.classList.add('open');
-  });
-
-  // Fechar carrinho
-  btnCloseCart.addEventListener('click', () => {
-    cartPanel.classList.remove('open');
-  });
-
-  // Clique para adicionar ao carrinho no botão
-  productsGrid.addEventListener('click', e => {
-    if (e.target.classList.contains('btn-add')) {
-      const id = Number(e.target.getAttribute('data-id'));
-      addToCart(id);
-    }
-  });
-
-  // Clique na imagem abre modal com detalhes
-  productsGrid.addEventListener('click', e => {
-    if (e.target.classList.contains('product-image')) {
-      const id = Number(e.target.getAttribute('data-id'));
-      openModal(id);
-    }
-  });
-
-  // Fechar modal botão
-  modalClose.addEventListener('click', closeModal);
-
-  // Fechar modal clicando fora do conteúdo
+  // Fecha modal clicando fora do conteúdo ou apertando ESC
   imageModal.addEventListener('click', e => {
-    if (e.target === imageModal) {
+    if (e.target === imageModal) closeModal();
+  });
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && imageModal.style.display === 'flex') {
       closeModal();
     }
   });
 
-  // Botão comprar do modal adiciona ao carrinho e fecha modal
-  modalBuyBtn.addEventListener('click', () => {
-    const id = Number(modalBuyBtn.getAttribute('data-id'));
-    addToCart(id);
-    closeModal();
+  // Abrir e fechar painel do carrinho
+  openCartBtn.addEventListener('click', () => {
+    cartPanel.classList.add('open');
+    // Foco no botão fechar para acessibilidade
+    closeCartBtn.focus();
+  });
+  closeCartBtn.addEventListener('click', () => {
+    cartPanel.classList.remove('open');
+    openCartBtn.focus();
   });
 
-  // Inicializar
-  renderProducts();
-  updateCart();
+  // Adicionar produto ao carrinho
+  function addToCart(productId) {
+    const itemIndex = cart.findIndex(item => item.id === productId);
+    if (itemIndex > -1) {
+      cart[itemIndex].quantity++;
+    } else {
+      const product = products.find(p => p.id === productId);
+      cart.push({ ...product, quantity: 1 });
+    }
+    renderCart();
+    // Abrir carrinho automaticamente quando adicionar
+    cartPanel.classList.add('open');
+  }
 
+  // Remover item do carrinho
+  function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    renderCart();
+  }
+
+  // Renderiza itens do carrinho e total
+  function renderCart() {
+    cartItemsList.innerHTML = '';
+    if (cart.length === 0) {
+      cartItemsList.innerHTML = '<li>Carrinho vazio</li>';
+      cartTotal.textContent = 'Total: €0.00';
+      return;
+    }
+    let total = 0;
+    cart.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `${item.name} x${item.quantity}`;
+      const btnRemove = document.createElement('button');
+      btnRemove.textContent = '✕';
+      btnRemove.style.marginLeft = '10px';
+      btnRemove.style.background = 'none';
+      btnRemove.style.border = 'none';
+      btnRemove.style.cursor = 'pointer';
+      btnRemove.style.color = '#d4471e';
+      btnRemove.style.fontWeight = '900';
+      btnRemove.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
+      btnRemove.addEventListener('click', () => removeFromCart(item.id));
+      li.appendChild(btnRemove);
+      cartItemsList.appendChild(li);
+      total += item.price * item.quantity;
+    });
+    cartTotal.textContent = `Total: €${total.toFixed(2)}`;
+  }
+
+  // Inicializa a página
+  renderProducts();
+  renderCart();
 </script>
 
 </body>
