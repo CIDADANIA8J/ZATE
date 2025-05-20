@@ -257,6 +257,39 @@
     color: #d4af37;
   }
 
+  /* Modal para ampliar imagem */
+  #imageModal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 20000;
+    cursor: pointer;
+  }
+
+  #imageModal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.7);
+    cursor: default;
+  }
+
+  #modalClose {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 20001;
+    user-select: none;
+  }
 </style>
 </head>
 <body>
@@ -282,6 +315,12 @@
 
 <button class="btn-open-cart" id="btnOpenCart">&#128722;</button>
 
+<!-- Modal para ampliar imagem -->
+<div id="imageModal">
+  <span id="modalClose">&times;</span>
+  <img id="modalImage" src="" alt="Imagem ampliada" />
+</div>
+
 <footer>
   <div class="footer-category">
     <h4>Mulher</h4>
@@ -296,154 +335,198 @@
     <ul>
       <li><a href="#">Camisetas</a></li>
       <li><a href="#">Bermudas</a></li>
+      <li><a href="#">Camisas</a></li
       <li><a href="#">Camisas</a></li>
     </ul>
   </div>
   <div class="footer-category">
-    <h4>Crianças</h4>
+    <h4>Infantil</h4>
     <ul>
       <li><a href="#">Roupas</a></li>
       <li><a href="#">Calçados</a></li>
       <li><a href="#">Acessórios</a></li>
     </ul>
   </div>
-  <div class="footer-category">
-    <h4>Acessórios</h4>
-    <ul>
-      <li><a href="#">Bolsas</a></li>
-      <li><a href="#">Óculos</a></li>
-      <li><a href="#">Relógios</a></li>
-    </ul>
-  </div>
 </footer>
 
 <script>
-  // Produtos exemplo
+  // Dados dos produtos
   const products = [
-    {id:1, title:'Vestido Floral', description:'Vestido leve para o verão', price:149.90, image:'https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?auto=format&fit=crop&w=400&q=80'},
-    {id:2, title:'Camiseta Masculina', description:'Camiseta confortável', price:79.90, image:'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80'},
-    {id:3, title:'Bermuda Jeans', description:'Bermuda jeans clara', price:120.00, image:'https://images.unsplash.com/photo-1530845641242-9dfd5de14894?auto=format&fit=crop&w=400&q=80'},
-    {id:4, title:'Blusa Estampada', description:'Blusa feminina moderna', price:99.90, image:'https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=400&q=80'},
-    {id:5, title:'Camisa Social', description:'Camisa social azul', price:130.00, image:'https://images.unsplash.com/photo-1520975691835-cdff92c974a5?auto=format&fit=crop&w=400&q=80'},
-    {id:6, title:'Calça Casual', description:'Calça masculina', price:180.00, image:'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80'},
-    {id:7, title:'Shorts Infantis', description:'Shorts para crianças', price:59.90, image:'https://images.unsplash.com/photo-1535930749574-1399327ce78f?auto=format&fit=crop&w=400&q=80'},
-    {id:8, title:'Bolsa de Palha', description:'Bolsa artesanal', price:110.00, image:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'},
-    {id:9, title:'Óculos de Sol', description:'Óculos UV400', price:150.00, image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=400&q=80'},
-    {id:10, title:'Relógio Moderno', description:'Relógio com design moderno', price:220.00, image:'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?auto=format&fit=crop&w=400&q=80'},
-    {id:11, title:'Sandália Feminina', description:'Sandália confortável', price:129.90, image:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80'},
-    {id:12, title:'Tênis Casual', description:'Tênis para o dia a dia', price:190.00, image:'https://images.unsplash.com/photo-1519741490267-1e5537357aa6?auto=format&fit=crop&w=400&q=80'},
+    {
+      id: 1,
+      name: "Vestido Floral",
+      description: "Vestido leve e floral para dias quentes.",
+      price: 120.00,
+      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      id: 2,
+      name: "Camiseta Básica",
+      description: "Camiseta confortável, 100% algodão.",
+      price: 45.50,
+      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      id: 3,
+      name: "Bermuda Jeans",
+      description: "Bermuda jeans estilosa e resistente.",
+      price: 98.90,
+      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      id: 4,
+      name: "Blusa Estampada",
+      description: "Blusa com estampa moderna para o verão.",
+      price: 79.90,
+      image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=500&q=80"
+    },
+    // Adicione mais produtos se desejar
   ];
 
-  // Referências DOM
+  // Referências de elementos
   const productsGrid = document.getElementById('productsGrid');
   const cartPanel = document.getElementById('cartPanel');
   const btnOpenCart = document.getElementById('btnOpenCart');
   const btnCloseCart = document.getElementById('btnCloseCart');
   const cartItemsEl = document.getElementById('cartItems');
   const cartTotalEl = document.getElementById('cartTotal');
-  const btnBannerComprar = document.getElementById('btnBannerComprar');
 
-  // Estado do carrinho: { produtoId: quantidade }
-  let cart = {};
+  const imageModal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+  const modalClose = document.getElementById('modalClose');
 
-  // Formatar preço para BRL
-  function formatPrice(num) {
-    return num.toLocaleString('pt-BR', { style: 'currency', currency: 'EUR' });
+  // Estado do carrinho
+  let cart = [];
+
+  // Função para formatar preço em BRL
+  function formatPrice(price) {
+    return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  // Renderizar produtos na grid
+  // Renderizar produtos na tela
   function renderProducts() {
     productsGrid.innerHTML = '';
-    products.forEach(p => {
-      const card = document.createElement('div');
+    products.forEach(product => {
+      const card = document.createElement('article');
       card.className = 'product-card';
 
       card.innerHTML = `
-        <img src="${p.image}" alt="${p.title}">
+        <img src="${product.image}" alt="${product.name}" data-id="${product.id}" class="product-image" />
         <div class="product-info">
-          <h3>${p.title}</h3>
-          <p>${p.description}</p>
-          <div class="price">${formatPrice(p.price)}</div>
-          <button class="btn-add" data-id="${p.id}">Adicionar</button>
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <div class="price">${formatPrice(product.price)}</div>
+          <button class="btn-add" data-id="${product.id}">Adicionar ao carrinho</button>
         </div>
       `;
 
       productsGrid.appendChild(card);
     });
-
-    // Adicionar eventos nos botões adicionar
-    document.querySelectorAll('.btn-add').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-id');
-        addToCart(Number(id));
-      });
-    });
   }
 
-  // Atualizar UI do carrinho
-  function updateCartUI() {
+  // Atualizar visual do carrinho
+  function updateCart() {
     cartItemsEl.innerHTML = '';
+
+    if (cart.length === 0) {
+      cartItemsEl.innerHTML = '<li>Seu carrinho está vazio.</li>';
+      cartTotalEl.textContent = 'Total: R$ 0,00';
+      return;
+    }
+
     let total = 0;
-    for (const id in cart) {
-      const quantity = cart[id];
-      const product = products.find(p => p.id === Number(id));
-      const itemTotal = product.price * quantity;
+
+    cart.forEach(item => {
+      const product = products.find(p => p.id === item.id);
+      const itemTotal = product.price * item.quantity;
       total += itemTotal;
 
       const li = document.createElement('li');
-      li.innerHTML = `
-        ${product.title} <span class="quantity">x${quantity}</span> <span>${formatPrice(itemTotal)}</span>
-      `;
-
+      li.textContent = `${product.name} x ${item.quantity} - ${formatPrice(itemTotal)}`;
       cartItemsEl.appendChild(li);
-    }
+    });
+
     cartTotalEl.textContent = `Total: ${formatPrice(total)}`;
   }
 
   // Adicionar produto ao carrinho
-  function addToCart(id) {
-    if(cart[id]) {
-      cart[id]++;
+  function addToCart(productId) {
+    const index = cart.findIndex(item => item.id === productId);
+    if (index !== -1) {
+      cart[index].quantity++;
     } else {
-      cart[id] = 1;
+      cart.push({ id: productId, quantity: 1 });
     }
-    updateCartUI();
-    openCartPanel();
+    updateCart();
   }
 
-  // Abrir painel do carrinho
-  function openCartPanel() {
+  // Abrir carrinho
+  function openCart() {
     cartPanel.classList.add('open');
   }
 
-  // Fechar painel do carrinho
-  btnCloseCart.addEventListener('click', () => {
+  // Fechar carrinho
+  function closeCart() {
     cartPanel.classList.remove('open');
+  }
+
+  // Abrir modal da imagem
+  function openImageModal(src, alt) {
+    modalImage.src = src;
+    modalImage.alt = alt;
+    imageModal.style.display = 'flex';
+  }
+
+  // Fechar modal da imagem
+  function closeImageModal() {
+    imageModal.style.display = 'none';
+    modalImage.src = '';
+    modalImage.alt = '';
+  }
+
+  // Event Listeners
+
+  // Ao clicar em um botão "Adicionar ao carrinho"
+  productsGrid.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-add')) {
+      const id = Number(e.target.getAttribute('data-id'));
+      addToCart(id);
+    }
   });
 
-  // Abrir carrinho pelo botão fixo
-  btnOpenCart.addEventListener('click', () => {
-    cartPanel.classList.toggle('open');
+  // Ao clicar em imagem do produto, abre modal com imagem maior
+  productsGrid.addEventListener('click', (e) => {
+    if (e.target.classList.contains('product-image')) {
+      const src = e.target.src;
+      const alt = e.target.alt;
+      openImageModal(src, alt);
+    }
   });
 
-  // Botão comprar do banner adiciona o primeiro produto ao carrinho só pra exemplo
-  btnBannerComprar.addEventListener('click', () => {
-    addToCart(products[0].id);
+  // Abrir e fechar carrinho
+  btnOpenCart.addEventListener('click', openCart);
+  btnCloseCart.addEventListener('click', closeCart);
+
+  // Fechar modal clicando no "X"
+  modalClose.addEventListener('click', closeImageModal);
+
+  // Fechar modal clicando fora da imagem
+  imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) {
+      closeImageModal();
+    }
   });
 
-  // Inicializa
+  // Botão banner "Comprar" — rola para os produtos
+  document.getElementById('btnBannerComprar').addEventListener('click', () => {
+    productsGrid.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Inicializa a página
   renderProducts();
-  updateCartUI();
+  updateCart();
 
 </script>
 
 </body>
 </html>
-<footer style="background-color: #222; color: #d4af37cc; padding: 20px; text-align: center; font-family: Arial, sans-serif;">
-  <p style="font-size: 18px; margin: 0 0 10px;">Quer contactar-nos?</p>
-  <p style="margin: 0;">
-    <a href="mailto:zatesupport@gmail.com" style="color: #d4af37cc; text-decoration: none; margin-right: 15px;">zatesupport@gmail.com</a> |
-    <a href="https://instagram.com/zate_studios_official" target="_blank" style="color: #d4af37cc; text-decoration: none; margin-left: 15px;">@zate_studios_official</a>
-  </p>
-</footer>
-
