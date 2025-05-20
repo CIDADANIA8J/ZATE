@@ -1,356 +1,186 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>ZATE | Moda Verão</title>
+<title>Loja Exemplo</title>
 <style>
-  /* Reset */
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-
+  /* Seu CSS aqui (mantive o essencial para funcionamento do modal e layout) */
   body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #fafafa;
-    color: #222;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 0;
   }
-
-  /* HEADER */
-  header {
-    background: linear-gradient(135deg, #d4af37cc, #3a2f0bcc);
-    color: #fff;
-    padding: 1rem 2rem;
-    font-weight: 900;
-    font-size: 1.8rem;
-    letter-spacing: 2px;
-    text-align: center;
-  }
-
-  /* BANNER */
-  .banner {
-    position: relative;
-    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
-    height: 350px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 1.5rem 2rem;
-    color: white;
-    font-weight: 900;
-    font-size: 2.8rem;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    border-radius: 0 0 20px 20px;
-  }
-  .banner button {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 2rem;
-    background: #d4af37;
-    border: none;
-    padding: 0.8rem 1.6rem;
-    font-weight: 700;
-    font-size: 1rem;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #111;
-    box-shadow: 0 4px 10px #b38a20;
-    transition: background-color 0.3s ease;
-  }
-  .banner button:hover {
-    background-color: #b38a20;
-  }
-
-  /* MAIN GRID */
-  main {
-    max-width: 1200px;
-    margin: 2rem auto 4rem;
-    padding: 0 1rem;
+  #productsGrid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 16px;
+    padding: 20px;
   }
-
   .product-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgb(0 0 0 / 0.1);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease;
-  }
-  .product-card:hover {
-    transform: translateY(-5px);
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    background: #fff;
   }
   .product-card img {
-    border-radius: 15px 15px 0 0;
     width: 100%;
-    height: 180px;
+    max-height: 150px;
     object-fit: cover;
-  }
-  .product-info {
-    padding: 1rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    cursor: pointer;
+    border-radius: 4px;
   }
   .product-info h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.4rem;
-    color: #333;
+    margin: 10px 0 5px;
   }
   .product-info p {
-    font-size: 0.9rem;
-    color: #666;
-    flex-grow: 1;
+    font-size: 0.9em;
+    color: #555;
   }
   .price {
-    font-weight: 900;
-    color: #d4af37;
-    font-size: 1.3rem;
-    margin-top: 0.8rem;
+    font-weight: bold;
+    margin: 8px 0;
   }
   .btn-add {
-    margin-top: 1rem;
-    background: #d4af37;
+    background: #007bff;
+    color: white;
     border: none;
-    padding: 0.7rem;
-    font-weight: 700;
-    color: #111;
-    border-radius: 10px;
+    padding: 8px 15px;
+    border-radius: 4px;
     cursor: pointer;
-    box-shadow: 0 4px 10px #b38a20;
-    transition: background-color 0.3s ease;
   }
   .btn-add:hover {
-    background-color: #b38a20;
+    background: #0056b3;
   }
-
-  /* CARRINHO DESLIZANTE */
-  .cart-panel {
+  #cartPanel {
     position: fixed;
-    top: 0; right: -360px;
-    width: 360px;
+    top: 0; right: -320px;
+    width: 300px;
     height: 100vh;
-    background: white;
-    box-shadow: -4px 0 20px rgb(0 0 0 / 0.15);
-    padding: 1.5rem;
-    transition: right 0.4s ease;
-    display: flex;
-    flex-direction: column;
-    z-index: 15000;
+    background: #f9f9f9;
+    border-left: 1px solid #ddd;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 999;
   }
-  .cart-panel.open {
+  #cartPanel.open {
     right: 0;
   }
-  .cart-panel h2 {
-    font-weight: 900;
-    margin-bottom: 1rem;
-    color: #222;
-  }
-  .cart-items {
-    flex-grow: 1;
-    overflow-y: auto;
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 0.5rem 0;
-  }
-  .cart-items li {
-    list-style: none;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    color: #333;
-  }
-  .cart-items li:last-child {
-    border-bottom: none;
-  }
-  .cart-items .quantity {
-    font-weight: 400;
-    font-size: 0.9rem;
-    color: #666;
-    margin-left: 0.6rem;
-  }
-  .cart-total {
-    font-weight: 900;
-    font-size: 1.3rem;
-    color: #d4af37;
-    margin-top: 1rem;
-    text-align: right;
-  }
-  .btn-close-cart {
-    align-self: flex-end;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-weight: 900;
-    color: #d4af37;
-  }
-  .btn-close-cart:hover {
-    color: #b38a20;
-  }
-
-  /* BOTAO FIXO DO CARRINHO */
-  .btn-open-cart {
+  #btnOpenCart {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #d4af37;
+    top: 20px; right: 20px;
+    background: #28a745;
+    color: white;
     border: none;
+    padding: 10px 16px;
     border-radius: 50%;
-    width: 56px;
-    height: 56px;
     cursor: pointer;
-    box-shadow: 0 4px 10px #b38a20;
-    font-weight: 900;
-    font-size: 1.3rem;
-    color: #111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 16000;
-    transition: background-color 0.3s ease;
+    font-size: 18px;
+    z-index: 1000;
   }
-  .btn-open-cart:hover {
-    background-color: #b38a20;
+  #btnCloseCart {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    float: right;
   }
-
-  /* RODAPE */
-  footer {
-    background: #222;
-    color: #ddd;
-    padding: 1.8rem 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
+  #cartItems li {
+    margin-bottom: 8px;
   }
-  footer .footer-category {
-    min-width: 100px;
-  }
-  footer .footer-category h4 {
-    font-weight: 700;
-    margin-bottom: 0.7rem;
-    color: #d4af37;
-  }
-  footer .footer-category ul {
-    list-style: none;
-  }
-  footer .footer-category li {
-    margin-bottom: 0.4rem;
-  }
-  footer .footer-category a {
-    color: #ddd;
-    text-decoration: none;
-    font-size: 0.95rem;
-    transition: color 0.3s ease;
-  }
-  footer .footer-category a:hover {
-    color: #d4af37;
+  #cartTotal {
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 1.1em;
   }
 
-  /* Modal para ampliar imagem */
+  /* Modal da imagem */
   #imageModal {
     display: none;
     position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
-    z-index: 20000;
-    cursor: pointer;
+    padding: 20px;
   }
-
-  #imageModal img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(255,255,255,0.7);
-    cursor: default;
+  #modalContent {
+    background: white;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    position: relative;
   }
-
+  #modalContent img {
+    width: 100%;
+    border-radius: 6px;
+  }
   #modalClose {
     position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 3rem;
-    color: white;
+    top: 10px; right: 15px;
+    font-size: 24px;
     cursor: pointer;
+    border: none;
+    background: none;
+  }
+  #modalContent h3 {
+    margin: 15px 0 8px;
+  }
+  #modalContent p {
+    color: #555;
+    margin-bottom: 10px;
+  }
+  #modalContent .price {
     font-weight: bold;
-    z-index: 20001;
-    user-select: none;
+    margin-bottom: 15px;
+  }
+  #modalContent button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #modalContent button:hover {
+    background: #0056b3;
   }
 </style>
 </head>
 <body>
 
-<header>ZATE MODA VERÃO</header>
+<button id="btnOpenCart" title="Abrir carrinho">🛒</button>
 
-<section class="banner">
-  PRONTO PARA O VERÃO
-  <button id="btnBannerComprar">Comprar</button>
+<section id="productsGrid">
+  <!-- Produtos serão renderizados aqui -->
 </section>
 
-<main id="productsGrid">
-  <!-- Produtos inseridos por JS -->
-</main>
-
-<!-- Carrinho -->
-<aside class="cart-panel" id="cartPanel">
-  <button class="btn-close-cart" id="btnCloseCart">&times;</button>
+<aside id="cartPanel">
+  <button id="btnCloseCart" title="Fechar carrinho">&times;</button>
   <h2>Carrinho</h2>
-  <ul class="cart-items" id="cartItems"></ul>
-  <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
+  <ul id="cartItems"></ul>
+  <div id="cartTotal">Total: 0,00 €</div>
 </aside>
 
-<button class="btn-open-cart" id="btnOpenCart">&#128722;</button>
-
-<!-- Modal para ampliar imagem -->
+<!-- Modal da imagem com detalhes -->
 <div id="imageModal">
-  <span id="modalClose">&times;</span>
-  <img id="modalImage" src="" alt="Imagem ampliada" />
+  <div id="modalContent">
+    <button id="modalClose" title="Fechar">&times;</button>
+    <img id="modalImage" src="" alt="" />
+    <h3 id="modalName"></h3>
+    <p id="modalDescription"></p>
+    <div class="price" id="modalPrice"></div>
+    <button id="modalBuyBtn">Comprar</button>
+  </div>
 </div>
 
-<footer>
-  <div class="footer-category">
-    <h4>Mulher</h4>
-    <ul>
-      <li><a href="#">Vestidos</a></li>
-      <li><a href="#">Blusas</a></li>
-      <li><a href="#">Calças</a></li>
-    </ul>
-  </div>
-  <div class="footer-category">
-    <h4>Homem</h4>
-    <ul>
-      <li><a href="#">Camisetas</a></li>
-      <li><a href="#">Bermudas</a></li>
-      <li><a href="#">Camisas</a></li
-      <li><a href="#">Camisas</a></li>
-    </ul>
-  </div>
-  <div class="footer-category">
-    <h4>Infantil</h4>
-    <ul>
-      <li><a href="#">Roupas</a></li>
-      <li><a href="#">Calçados</a></li>
-      <li><a href="#">Acessórios</a></li>
-    </ul>
-  </div>
-</footer>
-
 <script>
-  // Dados dos produtos
+  // Seus produtos originais completos (8 produtos)
   const products = [
     {
       id: 1,
@@ -371,7 +201,7 @@
       name: "Bermuda Jeans",
       description: "Bermuda jeans estilosa e resistente.",
       price: 98.90,
-      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=500&q=80"
+      image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=500&q=80"
     },
     {
       id: 4,
@@ -380,10 +210,37 @@
       price: 79.90,
       image: "https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=500&q=80"
     },
-    // Adicione mais produtos se desejar
+    {
+      id: 5,
+      name: "Calça Casual",
+      description: "Calça casual confortável para o dia a dia.",
+      price: 110.00,
+      image: "https://images.unsplash.com/photo-1495121605193-b116b5b09a3e?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      id: 6,
+      name: "Tênis Esportivo",
+      description: "Tênis confortável para atividades esportivas.",
+      price: 130.00,
+      image: "https://images.unsplash.com/photo-1519741491402-f80301b43797?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      id: 7,
+      name: "Jaqueta Jeans",
+      description: "Jaqueta jeans clássica para qualquer estação.",
+      price: 150.00,
+      image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+      id: 8,
+      name: "Saia Plissada",
+      description: "Saia plissada elegante para ocasiões especiais.",
+      price: 85.00,
+      image: "https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=500&q=80"
+    }
   ];
 
-  // Referências de elementos
+  // Elementos DOM
   const productsGrid = document.getElementById('productsGrid');
   const cartPanel = document.getElementById('cartPanel');
   const btnOpenCart = document.getElementById('btnOpenCart');
@@ -393,136 +250,133 @@
 
   const imageModal = document.getElementById('imageModal');
   const modalImage = document.getElementById('modalImage');
+  const modalName = document.getElementById('modalName');
+  const modalDescription = document.getElementById('modalDescription');
+  const modalPrice = document.getElementById('modalPrice');
   const modalClose = document.getElementById('modalClose');
+  const modalBuyBtn = document.getElementById('modalBuyBtn');
 
   // Estado do carrinho
   let cart = [];
 
-  // Função para formatar preço em BRL
+  // Formatador de preço em Euros
   function formatPrice(price) {
-    return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return price.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
   }
 
-  // Renderizar produtos na tela
+  // Renderiza os produtos na grade
   function renderProducts() {
     productsGrid.innerHTML = '';
-    products.forEach(product => {
+    products.forEach(prod => {
       const card = document.createElement('article');
       card.className = 'product-card';
-
       card.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" data-id="${product.id}" class="product-image" />
+        <img src="${prod.image}" alt="${prod.name}" data-id="${prod.id}" class="product-image" />
         <div class="product-info">
-          <h3>${product.name}</h3>
-          <p>${product.description}</p>
-          <div class="price">${formatPrice(product.price)}</div>
-          <button class="btn-add" data-id="${product.id}">Adicionar ao carrinho</button>
+          <h3>${prod.name}</h3>
+          <p>${prod.description}</p>
+          <div class="price">${formatPrice(prod.price)}</div>
+          <button class="btn-add" data-id="${prod.id}">Adicionar ao carrinho</button>
         </div>
       `;
-
       productsGrid.appendChild(card);
     });
   }
 
-  // Atualizar visual do carrinho
+  // Atualiza visual do carrinho
   function updateCart() {
     cartItemsEl.innerHTML = '';
-
     if (cart.length === 0) {
-      cartItemsEl.innerHTML = '<li>Seu carrinho está vazio.</li>';
-      cartTotalEl.textContent = 'Total: R$ 0,00';
+      cartItemsEl.innerHTML = '<li>O seu carrinho está vazio.</li>';
+      cartTotalEl.textContent = 'Total: 0,00 €';
       return;
     }
-
     let total = 0;
-
     cart.forEach(item => {
-      const product = products.find(p => p.id === item.id);
-      const itemTotal = product.price * item.quantity;
-      total += itemTotal;
-
+      const prod = products.find(p => p.id === item.id);
+      const subtotal = prod.price * item.quantity;
+      total += subtotal;
       const li = document.createElement('li');
-      li.textContent = `${product.name} x ${item.quantity} - ${formatPrice(itemTotal)}`;
+      li.textContent = `${prod.name} x ${item.quantity} - ${formatPrice(subtotal)}`;
       cartItemsEl.appendChild(li);
     });
-
     cartTotalEl.textContent = `Total: ${formatPrice(total)}`;
   }
 
-  // Adicionar produto ao carrinho
-  function addToCart(productId) {
-    const index = cart.findIndex(item => item.id === productId);
-    if (index !== -1) {
-      cart[index].quantity++;
+  // Adiciona produto ao carrinho
+  function addToCart(id) {
+    const idx = cart.findIndex(item => item.id === id);
+    if (idx > -1) {
+      cart[idx].quantity++;
     } else {
-      cart.push({ id: productId, quantity: 1 });
+      cart.push({ id: id, quantity: 1 });
     }
     updateCart();
   }
 
-  // Abrir carrinho
-  function openCart() {
-    cartPanel.classList.add('open');
-  }
-
-  // Fechar carrinho
-  function closeCart() {
-    cartPanel.classList.remove('open');
-  }
-
-  // Abrir modal da imagem
-  function openImageModal(src, alt) {
-    modalImage.src = src;
-    modalImage.alt = alt;
+  // Abrir modal com detalhes do produto
+  function openModal(id) {
+    const prod = products.find(p => p.id === id);
+    modalImage.src = prod.image;
+    modalImage.alt = prod.name;
+    modalName.textContent = prod.name;
+    modalDescription.textContent = prod.description;
+    modalPrice.textContent = formatPrice(prod.price);
+    modalBuyBtn.setAttribute('data-id', prod.id);
     imageModal.style.display = 'flex';
   }
 
-  // Fechar modal da imagem
-  function closeImageModal() {
+  // Fechar modal
+  function closeModal() {
     imageModal.style.display = 'none';
-    modalImage.src = '';
-    modalImage.alt = '';
   }
 
-  // Event Listeners
+  // Event listeners
 
-  // Ao clicar em um botão "Adicionar ao carrinho"
-  productsGrid.addEventListener('click', (e) => {
+  // Abrir carrinho
+  btnOpenCart.addEventListener('click', () => {
+    cartPanel.classList.add('open');
+  });
+
+  // Fechar carrinho
+  btnCloseCart.addEventListener('click', () => {
+    cartPanel.classList.remove('open');
+  });
+
+  // Clique para adicionar ao carrinho no botão
+  productsGrid.addEventListener('click', e => {
     if (e.target.classList.contains('btn-add')) {
       const id = Number(e.target.getAttribute('data-id'));
       addToCart(id);
     }
   });
 
-  // Ao clicar em imagem do produto, abre modal com imagem maior
-  productsGrid.addEventListener('click', (e) => {
+  // Clique na imagem abre modal com detalhes
+  productsGrid.addEventListener('click', e => {
     if (e.target.classList.contains('product-image')) {
-      const src = e.target.src;
-      const alt = e.target.alt;
-      openImageModal(src, alt);
+      const id = Number(e.target.getAttribute('data-id'));
+      openModal(id);
     }
   });
 
-  // Abrir e fechar carrinho
-  btnOpenCart.addEventListener('click', openCart);
-  btnCloseCart.addEventListener('click', closeCart);
+  // Fechar modal botão
+  modalClose.addEventListener('click', closeModal);
 
-  // Fechar modal clicando no "X"
-  modalClose.addEventListener('click', closeImageModal);
-
-  // Fechar modal clicando fora da imagem
-  imageModal.addEventListener('click', (e) => {
+  // Fechar modal clicando fora do conteúdo
+  imageModal.addEventListener('click', e => {
     if (e.target === imageModal) {
-      closeImageModal();
+      closeModal();
     }
   });
 
-  // Botão banner "Comprar" — rola para os produtos
-  document.getElementById('btnBannerComprar').addEventListener('click', () => {
-    productsGrid.scrollIntoView({ behavior: 'smooth' });
+  // Botão comprar do modal adiciona ao carrinho e fecha modal
+  modalBuyBtn.addEventListener('click', () => {
+    const id = Number(modalBuyBtn.getAttribute('data-id'));
+    addToCart(id);
+    closeModal();
   });
 
-  // Inicializa a página
+  // Inicializar
   renderProducts();
   updateCart();
 
@@ -530,3 +384,4 @@
 
 </body>
 </html>
+
