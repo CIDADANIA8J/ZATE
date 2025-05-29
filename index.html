@@ -507,9 +507,9 @@
       card.classList.add('product-card');
       card.setAttribute('tabindex', '0');
       card.setAttribute('role', 'button');
-      card.setAttribute('aria-label', Visualizar detalhes do produto ${product.name});
+      card.setAttribute('aria-label', `Visualizar detalhes do produto ${product.name}`);
 
-      card.innerHTML = 
+      card.innerHTML = `
         <img src="${product.image}" alt="${product.name}" />
         <div class="product-info">
           <h3>${product.name}</h3>
@@ -517,7 +517,7 @@
           <div class="price">€${product.price.toFixed(2)}</div>
           <button class="btn-add" aria-label="Adicionar ${product.name} ao carrinho">Comprar</button>
         </div>
-      ;
+      `;
 
       // Clique na imagem ou no card para abrir modal com detalhes
       card.querySelector('img').addEventListener('click', () => openModal(product));
@@ -548,7 +548,7 @@
     modalImage.alt = product.name;
     modalTitle.textContent = product.name;
     modalDesc.textContent = product.description;
-    modalPrice.textContent = €${product.price.toFixed(2)};
+    modalPrice.textContent = `€${product.price.toFixed(2)}`;
     modalBuyBtn.onclick = () => {
       addToCart(product.id);
       closeModal();
@@ -615,7 +615,7 @@
     let total = 0;
     cart.forEach(item => {
       const li = document.createElement('li');
-      li.textContent = ${item.name} x${item.quantity};
+      li.textContent = `${item.name} x${item.quantity}`;
       const btnRemove = document.createElement('button');
       btnRemove.textContent = '✕';
       btnRemove.style.marginLeft = '10px';
@@ -624,13 +624,13 @@
       btnRemove.style.cursor = 'pointer';
       btnRemove.style.color = '#d4471e';
       btnRemove.style.fontWeight = '900';
-      btnRemove.setAttribute('aria-label', Remover ${item.name} do carrinho);
+      btnRemove.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
       btnRemove.addEventListener('click', () => removeFromCart(item.id));
       li.appendChild(btnRemove);
       cartItemsList.appendChild(li);
       total += item.price * item.quantity;
     });
-    cartTotal.textContent = Total: €${total.toFixed(2)};
+    cartTotal.textContent = `Total: €${total.toFixed(2)}`;
   }
 
   // Inicializa a página
